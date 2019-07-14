@@ -1,0 +1,67 @@
+@import "../variables/colors";
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 1.4rem;
+  line-height: 1.2;
+  color: $text-primary;
+
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+}
+
+a {
+  text-decoration: inherit;
+  color: inherit;
+}
+
+button {
+  background: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  font: inherit;
+  line-height: inherit;
+  color: inherit;
+  cursor: pointer;
+
+  -webkit-appearance: none;
+
+  &:active,
+  &:focus {
+    outline: none;
+  }
+
+  &:disabled {
+    cursor: default;
+  }
+}
+
+b {
+  font-weight: bold;
+}
+
+i {
+  font-style: italic;
+}
+
+input,
+textarea {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 1.4rem;
+  background: none;
+  border: none;
+  padding: 0;
+
+  -webkit-appearance: none;
+
+  &:focus {
+    outline: none;
+  }
+}

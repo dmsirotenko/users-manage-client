@@ -1,9 +1,15 @@
 <template>
     <div id="app">
-        <h1>App</h1>
+        <users></users>
     </div>
 </template>
 
 <script>
-  export default {}
+  import Users from './components/Users.vue';
+
+  export default {
+    components: {
+      Users
+    }
+  }
 </script>

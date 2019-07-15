@@ -1,0 +1,54 @@
+@import "../mixins/block-shadow";
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: rgba(0, 0, 0, .45);
+  transition: all .2s;
+
+  .modal-dialog {
+    width: 50%;
+    min-width: 300px;
+    max-width: 600px;
+    padding: 30px 40px;
+    background: #fff;
+    border-radius: 6px;
+    margin: 70px auto;
+    transition: all .2s;
+
+    @include block-shadow;
+
+    &__header,
+    &__body {
+      margin-bottom: 30px;
+    }
+
+    &__header {
+      h3 {
+        font-size: 1.8rem;
+        font-weight: 600;
+      }
+    }
+  }
+}
+
+.modal-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-enter,
+.modal-leave-to {
+  opacity: 0;
+
+  .modal-dialog {
+    transform: scale(1.05);
+  }
+}

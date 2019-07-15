@@ -1,11 +1,11 @@
-.header {
-  padding: 25px 0;
+@import "../variables/container";
 
-  &--actions {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 25px $horizontal-padding;
 
   &__title {
     font-weight: 700;
@@ -15,9 +15,5 @@
   &__actions {
     display: flex;
     align-items: center;
-
-    .button {
-      margin-left: 12px;
-    }
   }
 }

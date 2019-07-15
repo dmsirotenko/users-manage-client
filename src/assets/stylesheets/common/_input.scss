@@ -1,0 +1,28 @@
+@import "../variables/colors";
+
+.form-group {
+  margin-bottom: 18px;
+
+  .label,
+  .input {
+    display: block;
+  }
+
+  .label {
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    color: $text-secondary;
+    font-weight: 600;
+    margin: 0 0 8px;
+  }
+
+  .input {
+    font-size: 1.3rem;
+    padding: 6px 10px;
+    border: 1px solid $border;
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    border-radius: 4px;
+  }
+}

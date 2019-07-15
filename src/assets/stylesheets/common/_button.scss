@@ -22,3 +22,20 @@
     border-color: $primary;
   }
 }
+
+.button-row {
+  display: inline-flex;
+  align-items: center;
+
+  .button {
+    margin: 0 6px;
+
+    &:first-child {
+      margin-left: 0;
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}

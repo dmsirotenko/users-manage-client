@@ -5,7 +5,7 @@
                 <th v-for="(column, key, index) in columns"
                     v-if="key !== 'actions'" :id="key" @click="handleColumnSort(key)">
                     {{ column }}
-                    <sort-icon :direction="getColumnSort(key)"></sort-icon>
+                    <sort-icon :direction="getColumnSort(key)" v-if="!sortDisabled"></sort-icon>
                 </th>
                 <th v-if="actions">{{ actionsName }}</th>
             </tr>
@@ -49,6 +49,11 @@
       data: {
         type: Array,
         required: true
+      },
+      sortDisabled: {
+        type: Boolean,
+        required: false,
+        default: false
       }
     },
     data() {

@@ -40,7 +40,7 @@
                 <div class="container">
                     <sortable-table class-name="users-table"
                                     :columns="table.columns" :actions="table.actions"
-                                    :data="usersTableData" @sort="handleTableSort"
+                                    :data="usersTableData" :sort-disabled="filters.results" @sort="handleTableSort"
                                     @row-edit="handleEditUser" @row-delete="handleDeleteUser"></sortable-table>
                 </div>
             </div>
@@ -81,7 +81,8 @@
             name: '',
             age: null
           },
-          results: null
+          results: null,
+          pendingRequest: null
         }
       }
     },
@@ -124,8 +125,11 @@
       },
       handleFiltersChange() {
         let {
-          params
+          params,
+          pendingRequest
         } = this.filters;
+
+        clearTimeout(pendingRequest);
 
         let searchParams = Object.entries(params)
           .reduce((acc, [param, value]) => {
@@ -144,7 +148,11 @@
           return;
         }
 
-        Users.search(searchParams)
+        this.filters.pendingRequest =
+          setTimeout(() => this.searchUsers(searchParams), 500);
+      },
+      searchUsers(searchParams) {
+        return Users.search(searchParams)
           .then(response => {
             let {
               data: results

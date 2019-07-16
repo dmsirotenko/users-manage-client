@@ -1,0 +1,25 @@
+@import "../variables/colors";
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+
+  &--sortable {
+    thead th {
+      cursor: pointer;
+    }
+  }
+
+  th,
+  td {
+    padding: 8px 12px;
+    border-top: 1px solid $border;
+  }
+
+  th {
+    font-weight: 600;
+    color: $text-secondary;
+    text-align: left;
+    border-bottom: 2px solid $border;
+  }
+}

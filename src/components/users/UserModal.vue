@@ -13,7 +13,7 @@
         </form>
         <div class="modal-buttons" slot="footer">
             <div class="button-row">
-                <button class="button" @click="close">Отмена</button>
+                <button class="button button--outline" @click="close">Отмена</button>
                 <button class="button button--primary" @click="handleSubmit">Сохранить</button>
             </div>
         </div>
@@ -42,7 +42,13 @@
     methods: {
       show(user) {
         if (user) {
-          this.$set(this.$data, 'user', user);
+          let {
+            id,
+            name,
+            age
+          } = user;
+
+          this.$set(this.$data, 'user', { id, name, age });
         }
 
         this.shown = true;

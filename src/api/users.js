@@ -31,7 +31,13 @@ export default class Users {
       .map(([col, dir]) => `${col}.${dir}`)
       .join(",");
 
-    return axios.get('/', { params: { sort } });
+    let params;
+
+    if (sort) {
+      params = { sort };
+    }
+
+    return axios.get('/', { params });
   }
 
   static search(searchParams = {}) {

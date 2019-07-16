@@ -17,19 +17,19 @@
                         <div class="filters__item">
                             <div class="form-group">
                                 <label for="filter-id" class="label">Id</label>
-                                <input type="number" step="1" min="1" class="input" id="filter-id" v-model="filters.params.id">
+                                <input type="number" step="1" min="1" class="input" id="filter-id" v-model="filtersParams.id">
                             </div>
                         </div>
                         <div class="filters__item">
                             <div class="form-group">
                                 <label for="filter-name" class="label">Имя</label>
-                                <input type="text" class="input" id="filter-name" v-model="filters.params.name">
+                                <input type="text" class="input" id="filter-name" v-model="filtersParams.name">
                             </div>
                         </div>
                         <div class="filters__item">
                             <div class="form-group">
                                 <label for="filter-age" class="label">Возраст</label>
-                                <input type="number" step="1" min="0" class="input" id="filter-age" v-model="filters.params.age">
+                                <input type="number" step="1" min="0" class="input" id="filter-age" v-model="filtersParams.age">
                             </div>
                         </div>
                     </div>
@@ -40,21 +40,34 @@
                 <div class="container">
                     <sortable-table class-name="users-table"
                                     :columns="table.columns" :actions="table.actions"
-                                    :data="usersTableData" :sort-disabled="filters.results" @sort="handleTableSort"
+                                    :data="usersTableData" :sort-disabled="!!filters.results" @sort="handleTableSort"
                                     @row-edit="handleEditUser" @row-delete="handleDeleteUser"></sortable-table>
                 </div>
             </div>
         </main>
 
         <user-modal ref="userModal"></user-modal>
+
+        <drag-drop-overflow @files-drop="handleFilesDrop"></drag-drop-overflow>
     </div>
 </template>
 
 <script>
   import SortableTable from './common/SortableTable.vue';
+  import DragDropOverflow from './common/DragDropOverflow.vue';
   import UserModal from './users/UserModal.vue';
 
   import Users from '../api/users';
+
+  import { typeValid } from '../config/import';
+
+  function filtersParamsInitialData() {
+    return {
+      id: null,
+      name: '',
+      age: null
+    };
+  }
 
   export default {
     mounted() {
@@ -76,14 +89,15 @@
         },
         filters: {
           shown: false,
-          params: {
-            id: null,
-            name: '',
-            age: null
-          },
+          params: filtersParamsInitialData(),
           results: null,
           pendingRequest: null
         }
+      }
+    },
+    watch: {
+      filtersParams() {
+        this.handleFiltersChange();
       }
     },
     computed: {
@@ -100,6 +114,9 @@
         }
 
         return this.users;
+      },
+      filtersParams() {
+        return this.filters.params;
       }
     },
     methods: {
@@ -192,12 +209,47 @@
         }
 
         Users.delete(id)
-          .then(response => this.$store.dispatch('deleteUser', id));
+          .then(response => {
+            this.$store.dispatch('deleteUser', id);
+
+            let {
+              results
+            } = this.filters;
+
+            if (results) {
+              let index = results.findIndex(user => user.id === id);
+
+              results.splice(index, 1);
+            }
+          });
+      },
+      handleFilesDrop(files) {
+        let file = files[0];
+
+        if (!typeValid(file)) {
+          alert('Данный тип файла не поддерживается');
+
+          return;
+        }
+
+        Users.import(files[0]).then(response => {
+          let {
+            data: users
+          } = response;
+
+          this.resetFilters();
+
+          return this.$store.dispatch('addUsers', users);
+        });
+      },
+      resetFilters() {
+        this.$set(this.filters, 'params', filtersParamsInitialData());
       }
     },
     components: {
       SortableTable,
-      UserModal
+      UserModal,
+      DragDropOverflow
     }
   }
 </script>

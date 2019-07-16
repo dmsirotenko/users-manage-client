@@ -1,0 +1,30 @@
+@import "../variables/colors";
+
+.drag-drop-overflow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  overflow-x: hidden;
+  overflow-y: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, .75);
+  transition: all .3s;
+
+  box-shadow: inset 0 0 0 10px rgba(0, 0, 0, 0.05);
+
+  &__title {
+    font-weight: 700;
+    color: $text-secondary;
+  }
+}
+
+.drag-drop-enter,
+.drag-drop-leave-to {
+  opacity: 0;
+  box-shadow: none;
+}

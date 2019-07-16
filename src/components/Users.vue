@@ -94,7 +94,17 @@
         this.$refs.userModal.show(user);
       },
       handleDeleteUser(user) {
-        console.log('delete', user);
+        let {
+          id,
+          name
+        } = user;
+
+        if (!confirm(`Удалить ${name}?`)) {
+          return;
+        }
+
+        Users.delete(id)
+          .then(response => this.$store.dispatch('deleteUser', id));
       }
     },
     components: {

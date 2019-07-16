@@ -10,6 +10,11 @@ export default {
   actions: {
     addUsers({ commit, state }, users) {
       state.users.unshift(...users);
+    },
+    deleteUser({ commit, state }, id) {
+      let index = state.users.findIndex(user => user.id === id);
+
+      state.users.splice(index, 1);
     }
   },
   getters: {

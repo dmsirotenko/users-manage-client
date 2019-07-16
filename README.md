@@ -11,7 +11,7 @@ VueJS API client for users management system from test assignment
   npm run serve
 ```
 
-## Clean node_modules and dist folders
+## Clean modules and dist folders
 ```bash
   npm run clean
 ```

@@ -1,0 +1,24 @@
+.filters {
+  padding: 15px 0;
+  transition: all 2s;
+
+  &__list {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 0 -10px;
+  }
+
+  &__item {
+    margin: 0 10px;
+  }
+
+  .form-group {
+    margin: 0;
+  }
+}
+
+.filters-enter,
+.filters-leave-to {
+  opacity: 0;
+}

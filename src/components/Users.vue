@@ -11,11 +11,36 @@
         </header>
 
         <main class="main">
+            <div class="filters" v-if="filters.shown">
+                <div class="container">
+                    <div class="filters__list" @input="handleFiltersChange">
+                        <div class="filters__item">
+                            <div class="form-group">
+                                <label for="filter-id" class="label">Id</label>
+                                <input type="number" step="1" min="1" class="input" id="filter-id" v-model="filters.params.id">
+                            </div>
+                        </div>
+                        <div class="filters__item">
+                            <div class="form-group">
+                                <label for="filter-name" class="label">Имя</label>
+                                <input type="text" class="input" id="filter-name" v-model="filters.params.name">
+                            </div>
+                        </div>
+                        <div class="filters__item">
+                            <div class="form-group">
+                                <label for="filter-age" class="label">Возраст</label>
+                                <input type="number" step="1" min="0" class="input" id="filter-age" v-model="filters.params.age">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="users">
                 <div class="container">
-                    <sortable-table class-name="users-table" :columns="table.columns"
-                                    :actions="table.actions" :data="users"
-                                    @sort="handleTableSort"
+                    <sortable-table class-name="users-table"
+                                    :columns="table.columns" :actions="table.actions"
+                                    :data="usersTableData" @sort="handleTableSort"
                                     @row-edit="handleEditUser" @row-delete="handleDeleteUser"></sortable-table>
                 </div>
             </div>
@@ -48,12 +73,32 @@
             edit: 'Изменить',
             delete: 'Удалить'
           }
+        },
+        filters: {
+          shown: false,
+          params: {
+            id: null,
+            name: '',
+            age: null
+          },
+          results: null
         }
       }
     },
     computed: {
       users() {
         return this.$store.state.users;
+      },
+      usersTableData() {
+        let {
+          results
+        } = this.filters;
+
+        if (Array.isArray(results)) {
+          return results;
+        }
+
+        return this.users;
       }
     },
     methods: {
@@ -71,7 +116,42 @@
         });
       },
       handleFilters() {
+        let {
+          shown
+        } = this.filters;
 
+        this.$set(this.filters, 'shown', !shown);
+      },
+      handleFiltersChange() {
+        let {
+          params
+        } = this.filters;
+
+        let searchParams = Object.entries(params)
+          .reduce((acc, [param, value]) => {
+            if (!value) {
+              return acc;
+            }
+
+            acc[param] = value;
+
+            return acc;
+          }, {});
+
+        if (!Object.values(searchParams).length) {
+          this.$set(this.filters, 'results', null);
+
+          return;
+        }
+
+        Users.search(searchParams)
+          .then(response => {
+            let {
+              data: results
+            } = response;
+
+            this.$set(this.filters, 'results', results);
+          });
       },
       handleTableSort(sort) {
         let sortParams = Object.entries(sort)
